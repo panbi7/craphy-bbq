@@ -1,72 +1,58 @@
 #for Craphy
 
-# Getting Started with Create React App
+React를 활용해서 예약시스템을 만들건데 내용은 다음과 같아.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Router를 이용하여 페이지 이동
+구성 페이지
+Header - 간단한 Navigation
+Home - 달력과 리뷰 글이 적혀있는 페이지. 달력을 눌렀을 때 예약자 list를 보여줌 (하루 최대 2개 예약 가능)
+- create를 눌렀을 때 router를 이용한 form이동
+    - crete는 user가 누르는 것인데, 나중에 edit, delete는 만든 (특정한)user만 가능하게 하도록 임의 비밀번호 설정하게끔 (4자리 입력 받고 저장해두기)
+    - list의 상태는 입금 확인중..., 입금 확정 (2개의 상태)
+    - 입금을 확인하는 상태가 있으므로 예약이 순차적으로 대기가 등록이 되고 있다는 것을 보여주는 페이지도 있어야함
+        - 대기 list가 있는 page
+            - 오른쪽 위에는 Craphy(admin)버튼을 만들어서 비밀번호 'craphy0323@'를 입력하는 사람만 접근 가능하게.
+            - admin모드라는 것을 만들어 로그인 할 경우 admin모드라는 것을 css의 변화를 통해 드러내고 사용자의 예약을 허락하고 fix가 가능하게 하는 버튼
+            - 로그아웃도 가능해야함
 
-## Available Scripts
+- 리뷰 글을 아무나 적을 수 있는 기능은 없는 간단한 코멘트를 적는 칸
 
-In the project directory, you can run:
+- 정보 칸
+**<대여 장비 품목>**
 
-### `npm start`
+- 가스 버너(화력좋음) ・ 1EA
+- 토치 ・ 1EA
+- 냄비 ・ 1EA
+- 집게 ・ 2EA
+- 숯 집게 ・ 1EA
+- 가위 ・ 2EA
+- 양푼이(대) ・ 1EA
+- 양푼이(중) ・ 1EA
+- 채반 ・ 1EA
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+➡️ 15,000₩
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**<추가상품>**
 
-### `npm test`
+🔵부탄가스 1개 (+1,500원) (기본제공 없음)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+🔵아이스박스 21L (+3,000원)
 
-### `npm run build`
+## <예약방법>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. 대여 가능한 날짜인지 확인 (2자리 마감)
+2. **1001-1962-1892 토스뱅크**에 1**5,000₩+추가상품 금액** 입금
+3. 오픈채팅 방에 예약 신청 양식 보내기
+4. 예약확정 문자 받기
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+(사용할 것들 : react-router-dom, react-bootstrap, React-Hook-Form, 비동기 통신 등)
 
-### `npm run eject`
+Form - 이름(name), 전화번호(phoneNumber), 예약날짜(userDate), 픽업시간(userTime), 부탄가스 개수(numOfGas), 아이스박스 사용 여부(boolean)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+--기존 페이지의 문제--
+정보를 저장하는 페이지가 없어서 정보 입력을 수동(연락)으로 하는 문제.
+대기열에 등록이 됐는지 안 됐는지를 시각적으로 보여주지 못함.
+페이지가 우리 것이 아닌 notion의 기능을 이용한 것으로 불편함.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
