@@ -9,11 +9,11 @@ function Home() {
     const [reservations, setReservations] = useState([]);
 
     useEffect(() => {
-        // 서버에서 예약 데이터를 가져와서 상태에 저장
         const fetchReservations = async () => {
             try {
-                const response = await axios.get('/reservations');
-                setReservations(response.data); // 서버에서 받아온 데이터를 상태로 설정
+                const response = await axios.get('http://localhost:3000/reservations'); // URL에 호스트 명시
+                setReservations(response.data);
+                console.log("Reservations fetched:", response.data); // 데이터 확인
             } catch (error) {
                 console.error('Error fetching reservations:', error);
             }
@@ -26,9 +26,9 @@ function Home() {
         setDate(selectedDate);
     };
 
-    // 선택한 날짜의 예약을 필터링하여 보여줍니다.
+    // 선택한 날짜에 맞는 예약만 필터링
     const selectedDateReservations = reservations.filter(
-        reservation => reservation.userDate === date.toISOString().split('T')[0]
+        reservation => reservation.userDate === date.toISOString().split('T')[0]  // 날짜 형식 맞춤
     );
 
     return (
@@ -37,13 +37,30 @@ function Home() {
             <Calendar onChange={handleDateChange} value={date} />
             <h3>Reservations for {date.toDateString()}</h3>
             {selectedDateReservations.length > 0 ? (
-                selectedDateReservations.map(reservation => (
-                    <div key={reservation.id} style={{ margin: '10px 0' }}>
-                        <p>
-                            {reservation.name} - Status: {reservation.status || 'Pending'}
-                        </p>
-                    </div>
-                ))
+                <table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
+                    <thead>
+                        <tr>
+                            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Name</th>
+                            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Phone Number</th>
+                            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Time</th>
+                            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Butane Gas</th>
+                            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Icebox Needed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {selectedDateReservations.map((reservation) => (
+                            <tr key={reservation.id}>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{reservation.name}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{reservation.phoneNumber}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{reservation.userTime}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{reservation.numOfGas}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                                    {reservation.userIcebox ? 'Yes' : 'No'}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             ) : (
                 <p>No reservations for this date.</p>
             )}

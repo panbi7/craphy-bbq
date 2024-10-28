@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ReservationForm() {
     const [name, setName] = useState('');
@@ -9,30 +10,38 @@ function ReservationForm() {
     const [numOfGas, setNumOfGas] = useState(0);
     const [userIcebox, setUserIcebox] = useState(false);
 
+    const location = useLocation();
+    const navigate = useNavigate();  // useNavigate 훅 추가
+
+    // URL 파라미터에서 날짜 가져오기
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const date = queryParams.get('date');
+        if (date) setUserDate(date);
+    }, [location.search]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // 필수 필드가 채워졌는지 확인
-        if (!name || !phoneNumber || !userDate || !userTime) {
-            alert("Please fill out all required fields.");
-            return;
-        }
-
+    
         try {
-            const response = await axios.post('/userData', {
+            const response = await axios.post('http://localhost:3000/userData', {
                 name,
                 phoneNumber,
                 userDate,
                 userTime,
-                numOfGas: numOfGas >= 0 ? numOfGas : 0, // 음수 방지
-                userIcebox: userIcebox ? 1 : 0 // SQLite에서는 1/0으로 저장
+                numOfGas,
+                userIcebox: userIcebox ? 1 : 0
             });
+            console.log("Server response:", response.data);  // 서버 응답 확인
             alert(response.data);
+
+            navigate("/");
         } catch (error) {
             console.error('Error saving user data:', error);
             alert('Error saving user data');
         }
     };
+    
 
     return (
         <div>
@@ -55,8 +64,7 @@ function ReservationForm() {
                 <input
                     type="date"
                     value={userDate}
-                    onChange={(e) => setUserDate(e.target.value)}
-                    required
+                    readOnly
                 />
                 <input
                     type="time"
@@ -69,7 +77,7 @@ function ReservationForm() {
                     placeholder="Number of Butane Gas"
                     value={numOfGas}
                     onChange={(e) => setNumOfGas(Number(e.target.value))}
-                    min="0" // 음수 방지
+                    min="0"
                 />
                 <label>
                     Need Icebox:

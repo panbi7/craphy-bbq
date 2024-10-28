@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
@@ -35,6 +34,10 @@ db.run(`
 // 사용자 데이터를 데이터베이스에 저장하는 POST 엔드포인트
 app.post('/userData', (req, res) => {
     const { name, phoneNumber, userDate, userTime, numOfGas, userIcebox } = req.body;
+
+    // 데이터가 제대로 전달되는지 확인
+    console.log("Received data:", req.body);
+
     const query = `INSERT INTO userData (name, phoneNumber, userDate, userTime, numOfGas, userIcebox) VALUES (?, ?, ?, ?, ?, ?)`;
 
     db.run(query, [name, phoneNumber, userDate, userTime, numOfGas || 0, userIcebox ? 1 : 0], function (err) {
@@ -42,6 +45,7 @@ app.post('/userData', (req, res) => {
             console.error('Error inserting data:', err.message);
             res.status(500).send('Error saving user data');
         } else {
+            console.log('Data inserted successfully with ID:', this.lastID);
             res.status(200).send('User data saved successfully');
         }
     });
@@ -55,6 +59,41 @@ app.get('/reservations', (req, res) => {
             res.status(500).send('Error fetching reservations');
         } else {
             res.status(200).json(rows);
+        }
+    });
+});
+
+// 예약 데이터 업데이트하는 PUT 엔드포인트
+app.put('/reservations/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, phoneNumber, userDate, userTime, numOfGas, userIcebox } = req.body;
+
+    const query = `UPDATE userData SET name = ?, phoneNumber = ?, userDate = ?, userTime = ?, numOfGas = ?, userIcebox = ? WHERE id = ?`;
+    const params = [name, phoneNumber, userDate, userTime, numOfGas || 0, userIcebox ? 1 : 0, id];
+
+    db.run(query, params, function (err) {
+        if (err) {
+            console.error('Error updating reservation:', err.message);
+            res.status(500).send('Error updating reservation');
+        } else {
+            console.log(`Reservation with ID ${id} updated successfully`);
+            res.status(200).send('Reservation updated successfully');
+        }
+    });
+});
+
+// 예약 데이터 삭제하는 DELETE 엔드포인트
+app.delete('/reservations/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `DELETE FROM userData WHERE id = ?`;
+    db.run(query, [id], function (err) {
+        if (err) {
+            console.error('Error deleting reservation:', err.message);
+            res.status(500).send('Error deleting reservation');
+        } else {
+            console.log(`Reservation with ID ${id} deleted successfully`);
+            res.status(200).send('Reservation deleted successfully');
         }
     });
 });
