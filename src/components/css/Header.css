@@ -1,0 +1,49 @@
+/* 헤더 스타일 */
+header {
+    background-color: #007bff; /* 헤더 배경색 */
+    color: #ffffff; /* 텍스트 색상 */
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 네비게이션 메뉴 스타일 */
+header nav {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
+    gap: 15px; /* 링크 간 간격 */
+}
+
+/* 링크 스타일 */
+header nav a {
+    color: #ffffff; /* 링크 텍스트 색상 */
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s, transform 0.3s;
+}
+
+/* 링크 호버 스타일 */
+header nav a:hover {
+    color: #ffdd57; /* 호버 시 색상 */
+    transform: scale(1.1); /* 살짝 확대 효과 */
+}
+
+/* 분리선 스타일 */
+header nav a:not(:last-child)::after {
+    content: "|";
+    margin-left: 10px;
+    color: #ffffff;
+    font-weight: normal;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 500px) {
+    header nav a {
+        font-size: 1rem;
+    }
+
+    header {
+        padding: 8px 10px;
+    }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import './css/ReservationForm.css';
 
 function ReservationForm() {
     const [name, setName] = useState('');
@@ -41,12 +42,10 @@ function ReservationForm() {
             alert('Error saving user data');
         }
     };
-    
-
     return (
-        <div>
+        <div className="reservation-container">
             <h2>Create Reservation</h2>
-            <form onSubmit={handleSubmit}>
+            <form className="reservation-form" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Name"
@@ -66,31 +65,32 @@ function ReservationForm() {
                     value={userDate}
                     readOnly
                 />
+                <p>Reservation Time</p>
                 <input
                     type="time"
                     value={userTime}
                     onChange={(e) => setUserTime(e.target.value)}
                     required
                 />
+                <p>Number of Butane Gas</p>
                 <input
                     type="number"
-                    placeholder="Number of Butane Gas"
                     value={numOfGas}
                     onChange={(e) => setNumOfGas(Number(e.target.value))}
                     min="0"
                 />
                 <label>
-                    Need Icebox:
                     <input
                         type="checkbox"
                         checked={userIcebox}
                         onChange={(e) => setUserIcebox(e.target.checked)}
                     />
+                    Need Icebox
                 </label>
                 <button type="submit">Submit</button>
             </form>
         </div>
-    );
+    );    
 }
 
 export default ReservationForm;
