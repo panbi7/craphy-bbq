@@ -25,7 +25,7 @@ function Admin() {
 
     // 로그인 기능
     const handleLogin = () => {
-        if (password === 'craphy0323@') {
+        if (password === '1234') {
             setIsAuthenticated(true);
         } else {
             alert('Incorrect Password');
@@ -40,24 +40,32 @@ function Admin() {
 
     // 예약 삭제 기능
     const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this reservation?");
+        if (!confirmDelete) return;
+
         try {
             await axios.delete(`http://localhost:3000/reservations/${id}`);
-            setReservations(reservations.filter(reservation => reservation.id !== id));
+            fetchReservations();  // 삭제 후 목록 다시 가져오기
+            alert('Reservation deleted successfully');
         } catch (error) {
             console.error('Error deleting reservation:', error);
+            alert('Failed to delete reservation');
         }
     };
 
     // 예약 수정 저장 기능
     const handleSaveEdit = async (id) => {
+        const confirmSave = window.confirm("Are you sure you want to save changes?");
+        if (!confirmSave) return;
+
         try {
             await axios.put(`http://localhost:3000/reservations/${id}`, editingReservation);
-            setReservations(reservations.map(reservation => 
-                reservation.id === id ? editingReservation : reservation
-            ));
+            fetchReservations();  // 수정 후 목록 다시 가져오기
             setEditingReservation(null);
+            alert('Reservation updated successfully');
         } catch (error) {
             console.error('Error updating reservation:', error);
+            alert('Failed to update reservation');
         }
     };
 

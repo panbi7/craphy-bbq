@@ -85,6 +85,7 @@ app.put('/reservations/:id', (req, res) => {
 // 예약 데이터 삭제하는 DELETE 엔드포인트
 app.delete('/reservations/:id', (req, res) => {
     const { id } = req.params;
+    console.log(`Delete request received for ID: ${id}`); // 요청 수신 로그
 
     const query = `DELETE FROM userData WHERE id = ?`;
     db.run(query, [id], function (err) {

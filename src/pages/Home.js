@@ -11,9 +11,9 @@ function Home() {
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/reservations'); // URL에 호스트 명시
+                const response = await axios.get('http://localhost:3000/reservations');
                 setReservations(response.data);
-                console.log("Reservations fetched:", response.data); // 데이터 확인
+                console.log("Reservations fetched:", response.data);
             } catch (error) {
                 console.error('Error fetching reservations:', error);
             }
@@ -26,9 +26,9 @@ function Home() {
         setDate(selectedDate);
     };
 
-    // 선택한 날짜에 맞는 예약만 필터링
+    // 로컬 시간대에 맞는 날짜 형식으로 변환하여 선택한 날짜와 비교
     const selectedDateReservations = reservations.filter(
-        reservation => reservation.userDate === date.toISOString().split('T')[0]  // 날짜 형식 맞춤
+        reservation => reservation.userDate === date.toLocaleDateString('en-CA')
     );
 
     return (
@@ -64,7 +64,7 @@ function Home() {
             ) : (
                 <p>No reservations for this date.</p>
             )}
-            <Link to={`/create?date=${date.toISOString().split('T')[0]}`}>
+            <Link to={`/create?date=${date.toLocaleDateString('en-CA')}`}>
                 <button style={{ marginTop: '20px' }}>
                     Create Reservation for {date.toDateString()}
                 </button>
